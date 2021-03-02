@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Ticker extends StatelessWidget {
-  final tickerName;
-  final volume;
-  final value;
-  final difference;
+  final String tickerName;
+  final double volume;
+  final double value;
+  final double difference;
 
   Ticker({
     this.tickerName,
@@ -15,9 +15,7 @@ class Ticker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final percentage = ((double.parse(value) - double.parse(difference)) /
-        double.parse(difference) *
-        100);
+    final percentage = ((value - difference) / difference * 100);
     return Container(
       padding: EdgeInsets.all(20),
       height: 120,
@@ -26,89 +24,100 @@ class Ticker extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
-            child: Row(children: [
-              Expanded(
-                child: Container(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(tickerName.toString().substring(0, 3),
-                            style: TextStyle(
-                              fontSize: 22,
-                            )),
-                        Text("/ " + tickerName.toString().substring(3),
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xffffffff).withOpacity(.4),
-                            )),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              tickerName.toString().substring(0, 3),
+                              style: TextStyle(
+                                fontSize: 22,
+                              ),
+                            ),
+                            Text(
+                              '/ ${tickerName.toString().substring(3)}',
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xffffffff).withOpacity(.4),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'Vol ${volume.toStringAsFixed(2)} M',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xffffffff).withOpacity(.4),
+                          ),
+                        )
                       ],
                     ),
-                    SizedBox(height: 5),
-                    Text(
-                      "Vol " + double.parse(volume).toStringAsFixed(2) + "M",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0xffffffff).withOpacity(.4),
-                      ),
-                    )
-                  ],
-                )),
-              ),
-              Expanded(
-                child: Container(
+                  ),
+                ),
+                Expanded(
+                  child: Container(
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      double.parse(value)
-                          .toString()
-                          .replaceAll(RegExp(r"([.]*0)(?!.*\d)"), ""),
-                      style: TextStyle(
-                        fontSize: 20,
-                        letterSpacing: 0.2,
-                        color: double.parse(value) > double.parse(difference)
-                            ? Color(0xff2DBD85)
-                            : Color(0xffE44358),
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      double.parse(difference)
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          value
                               .toString()
-                              .replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "") +
-                          ' \$',
-                      style: TextStyle(
-                        fontSize: 16,
-                        letterSpacing: 0.2,
-                        color: Color(0xffffffff).withOpacity(.4),
-                      ),
-                    )
-                  ],
-                )),
-              )
-            ]),
+                              .replaceAll(RegExp(r"([.]*0)(?!.*\d)"), ""),
+                          style: TextStyle(
+                            fontSize: 20,
+                            letterSpacing: 0.2,
+                            color: value > difference
+                                ? Color(0xff2DBD85)
+                                : Color(0xffE44358),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          difference
+                                  .toString()
+                                  .replaceAll(RegExp(r"([.]*0)(?!.*\d)"), "") +
+                              ' \$',
+                          style: TextStyle(
+                            fontSize: 16,
+                            letterSpacing: 0.2,
+                            color: Color(0xffffffff).withOpacity(.4),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           Container(
-              margin: EdgeInsets.all(5),
-              width: 100,
-              height: 45,
-              decoration: BoxDecoration(
-                color: percentage.isNegative
-                    ? Color(0xffE44358)
-                    : Color(0xff2DBD85),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Center(
-                  child: Text(
+            margin: EdgeInsets.all(5),
+            width: 100,
+            height: 45,
+            decoration: BoxDecoration(
+              color: percentage < 0 ? Color(0xffE44358) : Color(0xff2DBD85),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Center(
+              child: Text(
                 percentage.toStringAsFixed(2) + "%",
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              )))
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );

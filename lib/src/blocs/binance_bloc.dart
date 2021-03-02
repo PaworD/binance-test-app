@@ -5,13 +5,14 @@ import '../resources/binance_api_provider.dart';
 
 import 'dart:convert';
 
+@deprecated
 class BinanceBloc {
-  BinanceApiProvider binanceApiProvider = BinanceApiProvider();
+  BinanceApi binanceApiProvider = BinanceApi();
 
   Stream get getTickers => connection();
 
   Stream connection() {
-    final stream = binanceApiProvider.subscribeToTickers().stream.map((event) {
+    final stream = binanceApiProvider.tickersChannel().stream.map((event) {
       return jsonDecode(event);
     });
 
@@ -45,7 +46,7 @@ class BinanceBloc {
   }
 
   void dispose() {
-    binanceApiProvider.subscribeToTickers().sink.close();
+    binanceApiProvider.tickersChannel().sink.close();
   }
 }
 

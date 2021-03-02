@@ -1,21 +1,21 @@
 class TickerModel {
   String _tickerName;
-  var _currentValue;
-  var _difference;
-  var _volume;
+  double _currentValue;
+  double _difference;
+  double _volume;
 
   TickerModel.fromJson(dynamic parsedJson) {
     _tickerName = parsedJson['s'];
-    _currentValue = parsedJson['c'];
-    _difference = parsedJson['o'];
-    _volume = parsedJson['q'];
+    _currentValue = double.tryParse(parsedJson['c']) ?? 0.0;
+    _difference = double.tryParse(parsedJson['o']) ?? 0.0;
+    _volume = double.tryParse(parsedJson['q']) ?? 0.0;
   }
 
   String get tickerName => _tickerName;
 
-  dynamic get currentValue => _currentValue;
+  double get currentValue => _currentValue;
 
-  dynamic get difference => _difference;
+  double get difference => _difference;
 
-  dynamic get volume => _volume;
+  double get volume => _volume;
 }
